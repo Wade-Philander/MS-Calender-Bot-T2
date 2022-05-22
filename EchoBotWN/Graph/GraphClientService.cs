@@ -9,7 +9,8 @@ namespace EchoBotWN.Graph
         public GraphServiceClient GetAuthenticatedGraphClient(string accessToken)
         {
             return new GraphServiceClient(new DelegateAuthenticationProvider(
-                async (request) => {
+                async (request) =>
+                {
                     // Add the access token to the Authorization header
                     // on the outgoing request
                     request.Headers.Authorization =

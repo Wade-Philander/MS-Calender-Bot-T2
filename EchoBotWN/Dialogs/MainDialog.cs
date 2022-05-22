@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using AdaptiveCards;
+using EchoBotWN.Graph;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-using AdaptiveCards;
-using EchoBotWN.Graph;
 using Microsoft.Graph;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EchoBotWN.Dialogs
 {
@@ -40,6 +39,8 @@ namespace EchoBotWN.Dialogs
                 }));
 
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
+
+            AddDialog(new NewEventDialog(configuration, graphClientService));
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
@@ -167,9 +168,7 @@ namespace EchoBotWN.Dialogs
                     }
                     else if (command.StartsWith("add event"))
                     {
-                        await stepContext.Context.SendActivityAsync(
-                            MessageFactory.Text("I don't know how to do this yet!"),
-                            cancellationToken);
+                        return await stepContext.BeginDialogAsync(nameof(NewEventDialog), null, cancellationToken);
                     }
                     else
                     {
