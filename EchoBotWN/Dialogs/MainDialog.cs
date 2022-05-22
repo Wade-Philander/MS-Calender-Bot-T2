@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -229,6 +230,10 @@ namespace EchoBotWN.Dialogs
         new QueryOption("endDateTime", endOfWeek.ToString("o"))
     };
 
+
+            var users = await graphClient.Users.Request().GetAsync();
+
+
             // Get events happening between right now and the end of the week
             // GET /me/calendarView?startDateTime=""&endDateTime=""
             var events = await graphClient.Me
@@ -246,7 +251,8 @@ namespace EchoBotWN.Dialogs
                     e.Organizer,
                     e.Start,
                     e.End,
-                    e.Location
+                    e.Location,
+                    e.Categories
                 })
                 // Order results chronologically
                 .OrderBy("start/dateTime")
@@ -257,14 +263,17 @@ namespace EchoBotWN.Dialogs
 
             foreach (var calendarEvent in events.CurrentPage)
             {
-                var eventCard = CardHelper.GetEventCard(calendarEvent, dateTimeFormat);
-
-                // Add the card to the message's attachments
-                calendarViewMessage.Attachments.Add(new Microsoft.Bot.Schema.Attachment
+                if (calendarEvent.Categories.FirstOrDefault() == "Bot")
                 {
-                    ContentType = AdaptiveCard.ContentType,
-                    Content = eventCard
-                });
+                    var eventCard = CardHelper.GetEventCard(calendarEvent, dateTimeFormat);
+
+                    // Add the card to the message's attachments
+                    calendarViewMessage.Attachments.Add(new Microsoft.Bot.Schema.Attachment
+                    {
+                        ContentType = AdaptiveCard.ContentType,
+                        Content = eventCard
+                    });
+                }
             }
 
             await stepContext.Context.SendActivityAsync(calendarViewMessage, cancellationToken);

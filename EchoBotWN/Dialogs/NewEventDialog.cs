@@ -138,6 +138,7 @@ namespace EchoBotWN.Dialogs
     WaterfallStepContext stepContext,
     CancellationToken cancellationToken)
         {
+            // could put everyones email addresses here (clunky)
             stepContext.Values["attendees"] = (string)stepContext.Result;
 
             return await stepContext.PromptAsync("startPrompt",
@@ -233,7 +234,9 @@ namespace EchoBotWN.Dialogs
                     var attendees = stepContext.Values["attendees"] as string;
                     var start = stepContext.Values["start"] as DateTime?;
                     var end = stepContext.Values["end"] as DateTime?;
-
+                    IEnumerable<string> categories = new string[] {"Bot"};
+                    
+                   
                     // Get an authenticated Graph client using
                     // the access token
                     var graphClient = _graphClientService
@@ -260,8 +263,12 @@ namespace EchoBotWN.Dialogs
                             {
                                 DateTime = end?.ToString("o"),
                                 TimeZone = user.MailboxSettings.TimeZone
-                            }
+                            },
+                            Categories = categories
                         };
+
+
+                        var users = await graphClient.Users.Request().GetAsync();
 
                         // If attendees were provided, add them
                         if (!string.IsNullOrEmpty(attendees))
