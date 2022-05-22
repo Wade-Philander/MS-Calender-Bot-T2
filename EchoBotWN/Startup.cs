@@ -11,6 +11,7 @@ using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using EchoBotWN.Graph;
 
 namespace EchoBotWN
 {
@@ -34,8 +35,22 @@ namespace EchoBotWN
             // Create the Bot Adapter with error handling enabled.
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
 
+            // Create the storage we'll be using for User and Conversation state. (Memory is great for testing purposes.)
+            services.AddSingleton<IStorage, MemoryStorage>();
+
+            // Create the User state. (Used in this bot's Dialog implementation.)
+            services.AddSingleton<UserState>();
+
+            // Create the Conversation state. (Used by the Dialog system itself.)
+            services.AddSingleton<ConversationState>();
+
+            // The Dialog that will be run by the bot.
+            services.AddSingleton<Dialogs.MainDialog>();
+
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
-            services.AddTransient<IBot, Bots.EchoBot>();
+            services.AddTransient<IBot, Bots.EchoBot<Dialogs.MainDialog>>();
+
+            services.AddSingleton<IGraphClientService, GraphClientService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
