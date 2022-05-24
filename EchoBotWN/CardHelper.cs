@@ -1,5 +1,6 @@
 ﻿
 using AdaptiveCards;
+using EchoBotWN.Models;
 using Microsoft.Graph;
 using System;
 using System.IO;
@@ -59,7 +60,7 @@ namespace EchoBotWN
             return new Uri($"data:image/png;base64,{Convert.ToBase64String(photoBytes)}");
         }
 
-        public static AdaptiveCard GetEventCard(Event calendarEvent, string dateTimeFormat)
+        public static AdaptiveCard GetEventCard(eventModel calendarEvent, string dateTimeFormat)
         {
             // Build an Adaptive Card for the event
             var eventCard = new AdaptiveCard("1.2");
@@ -69,16 +70,7 @@ namespace EchoBotWN
             {
                 Size = AdaptiveTextSize.Medium,
                 Weight = AdaptiveTextWeight.Bolder,
-                Text = calendarEvent.Subject
-            });
-
-            // Add organizer
-            eventCard.Body.Add(new AdaptiveTextBlock
-            {
-                Size = AdaptiveTextSize.Default,
-                Weight = AdaptiveTextWeight.Lighter,
-                Spacing = AdaptiveSpacing.None,
-                Text = calendarEvent.Organizer.EmailAddress.Name
+                Text = $"{calendarEvent.id}: {calendarEvent.subject}"
             });
 
             // Add details
@@ -86,25 +78,25 @@ namespace EchoBotWN
 
             details.Facts.Add(new AdaptiveFact
             {
-                Title = "Start",
-                Value = DateTime.Parse(calendarEvent.Start.DateTime).ToString(dateTimeFormat)
-            });
+                Title = "Message:",
+                Value = calendarEvent.message //DateTime.Parse(calendarEvent.Start.DateTime).ToString(dateTimeFormat)
+            }); // ;
 
-            details.Facts.Add(new AdaptiveFact
-            {
-                Title = "End",
-                Value = DateTime.Parse(calendarEvent.End.DateTime).ToString(dateTimeFormat)
-            });
+              details.Facts.Add(new AdaptiveFact
+              {
+                  Title = "Date:",
+                  Value = calendarEvent.date
+              });
 
-            if (calendarEvent.Location != null &&
-                !string.IsNullOrEmpty(calendarEvent.Location.DisplayName))
-            {
-                details.Facts.Add(new AdaptiveFact
-                {
-                    Title = "Location",
-                    Value = calendarEvent.Location.DisplayName
-                });
-            }
+            /*  if (calendarEvent.Location != null &&
+                  !string.IsNullOrEmpty(calendarEvent.Location.DisplayName))
+              {
+                  details.Facts.Add(new AdaptiveFact
+                  {
+                      Title = "Location",
+                      Value = calendarEvent.Location.DisplayName
+                  });
+              }*/
 
             eventCard.Body.Add(details);
 

@@ -1,15 +1,14 @@
 ﻿using AdaptiveCards;
+using EchoBotWN.Excel;
 using EchoBotWN.Graph;
+using EchoBotWN.Models;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Choices;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Graph;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,16 +18,12 @@ namespace EchoBotWN.Dialogs
     {
         const string NO_PROMPT = "no-prompt";
         protected readonly ILogger _logger;
-        private readonly IGraphClientService _graphClientService;
         public MainDialog(IConfiguration configuration,
-            ILogger<MainDialog> logger,
-            IGraphClientService graphClientService)
+            ILogger<MainDialog> logger)
             : base(nameof(MainDialog), configuration["ConnectionName"])
         {
             _logger = logger;
-            _graphClientService = graphClientService;
-            // OAuthPrompt dialog handles the authentication and token
-            // acquisition
+
             AddDialog(new OAuthPrompt(
                 nameof(OAuthPrompt),
                 new OAuthPromptSettings
@@ -36,12 +31,12 @@ namespace EchoBotWN.Dialogs
                     ConnectionName = ConnectionName,
                     Text = "Please login",
                     Title = "Login",
-                    Timeout = 300000, // User has 5 minutes to login
+                    Timeout = 300000,
                 }));
 
             AddDialog(new ChoicePrompt(nameof(ChoicePrompt)));
 
-            AddDialog(new NewEventDialog(configuration, graphClientService));
+            AddDialog(new NewEventDialog(configuration));
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
@@ -57,9 +52,10 @@ namespace EchoBotWN.Dialogs
             InitialDialogId = nameof(WaterfallDialog);
         }
 
+
         private async Task<DialogTurnResult> LoginPromptStepAsync(
-            WaterfallStepContext stepContext,
-            CancellationToken cancellationToken)
+          WaterfallStepContext stepContext,
+          CancellationToken cancellationToken)
         {
             // If we're going through the waterfall a second time, don't do an extra OAuthPrompt
             var options = stepContext.Options?.ToString();
@@ -107,11 +103,8 @@ namespace EchoBotWN.Dialogs
             {
                 Prompt = MessageFactory.Text("Please choose an option below"),
                 Choices = new List<Choice> {
-                    new Choice { Value = "Show token" },
-                    new Choice { Value = "Show me" },
                     new Choice { Value = "Show calendar" },
                     new Choice { Value = "Add event" },
-                    new Choice { Value = "Log out" },
                 }
             };
 
@@ -144,58 +137,41 @@ namespace EchoBotWN.Dialogs
         {
             if (stepContext.Result != null)
             {
-                var tokenResponse = stepContext.Result as TokenResponse;
+                var command = ((string)stepContext.Values["command"] ?? string.Empty).ToLowerInvariant();
 
-                // If we have the token use the user is authenticated so we may use it to make API calls.
-                if (tokenResponse?.Token != null)
+                if (command.StartsWith("show calendar"))
                 {
-                    var command = ((string)stepContext.Values["command"] ?? string.Empty).ToLowerInvariant();
-
-                    if (command.StartsWith("show token"))
-                    {
-                        // Show the user's token - for testing and troubleshooting
-                        // Generally production apps should not display access tokens
-                        await stepContext.Context.SendActivityAsync(
-                            MessageFactory.Text($"Your token is: {tokenResponse.Token}"),
-                            cancellationToken);
-                    }
-                    else if (command.StartsWith("show me"))
-                    {
-                        await DisplayLoggedInUser(tokenResponse.Token, stepContext, cancellationToken);
-                    }
-                    else if (command.StartsWith("show calendar"))
-                    {
-                        await DisplayCalendarView(tokenResponse.Token, stepContext, cancellationToken);
-                    }
-                    else if (command.StartsWith("add event"))
-                    {
-                        return await stepContext.BeginDialogAsync(nameof(NewEventDialog), null, cancellationToken);
-                    }
-                    else
-                    {
-                        await stepContext.Context.SendActivityAsync(
-                            MessageFactory.Text("I'm sorry, I didn't understand. Please try again."),
-                            cancellationToken);
-                    }
+                    await DisplayCalendarView(stepContext, cancellationToken);
+                }
+                else if (command.StartsWith("add event"))
+                {
+                    return await stepContext.BeginDialogAsync(nameof(NewEventDialog), null, cancellationToken);
+                }
+                else
+                {
+                    await stepContext.Context.SendActivityAsync(
+                        MessageFactory.Text("I'm sorry, I didn't understand. Please try again."),
+                        cancellationToken);
                 }
             }
-            else
-            {
-                await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("We couldn't log you in. Please try again later."),
-                    cancellationToken);
-                return await stepContext.EndDialogAsync(cancellationToken: cancellationToken);
-            }
+
 
             // Go to the next step
             return await stepContext.NextAsync(cancellationToken: cancellationToken);
         }
 
+
+
+
+
+
         private async Task DisplayCalendarView(
-    string accessToken,
     WaterfallStepContext stepContext,
     CancellationToken cancellationToken)
         {
+
+            List<eventModel> events = await excel.getEvents();
+            /*
             var graphClient = _graphClientService
                 .GetAuthenticatedGraphClient(accessToken);
 
@@ -231,7 +207,7 @@ namespace EchoBotWN.Dialogs
     };
 
 
-            var users = await graphClient.Users.Request().GetAsync();
+        //    var users = await graphClient.Users.Request().GetAsync();
 
 
             // Get events happening between right now and the end of the week
@@ -243,7 +219,7 @@ namespace EchoBotWN.Dialogs
                 // response will be in preferred time zone
                 .Header("Prefer", $"outlook.timezone=\"{preferredTimeZone}\"")
                 // Get max 3 per request
-                .Top(3)
+                .Top(30)
                 // Only return fields app will use
                 .Select(e => new
                 {
@@ -257,69 +233,29 @@ namespace EchoBotWN.Dialogs
                 // Order results chronologically
                 .OrderBy("start/dateTime")
                 .GetAsync();
-
+            */
             var calendarViewMessage = MessageFactory.Text("Here are your upcoming events");
             calendarViewMessage.AttachmentLayout = AttachmentLayoutTypes.List;
+            var dateTimeFormat = "G";
 
-            foreach (var calendarEvent in events.CurrentPage)
+
+            foreach (var calendarEvent in events)
             {
-                if (calendarEvent.Categories.FirstOrDefault() == "Bot")
-                {
-                    var eventCard = CardHelper.GetEventCard(calendarEvent, dateTimeFormat);
 
-                    // Add the card to the message's attachments
-                    calendarViewMessage.Attachments.Add(new Microsoft.Bot.Schema.Attachment
-                    {
-                        ContentType = AdaptiveCard.ContentType,
-                        Content = eventCard
-                    });
-                }
+                var eventCard = CardHelper.GetEventCard(calendarEvent, dateTimeFormat);
+
+                // Add the card to the message's attachments
+                calendarViewMessage.Attachments.Add(new Microsoft.Bot.Schema.Attachment
+                {
+                    ContentType = AdaptiveCard.ContentType,
+                    Content = eventCard
+                });
+
             }
 
             await stepContext.Context.SendActivityAsync(calendarViewMessage, cancellationToken);
         }
 
-        private async Task DisplayLoggedInUser(
-    string accessToken,
-    WaterfallStepContext stepContext,
-    CancellationToken cancellationToken)
-        {
-            var graphClient = _graphClientService
-                .GetAuthenticatedGraphClient(accessToken);
-
-            // Get the user
-            // GET /me?$select=displayName,mail,userPrincipalName
-            var user = await graphClient.Me
-                .Request()
-                .Select(u => new
-                {
-                    u.DisplayName,
-                    u.Mail,
-                    u.UserPrincipalName
-                })
-                .GetAsync();
-
-            // Get the user's photo
-            // GET /me/photos/48x48/$value
-            var userPhoto = await graphClient.Me
-                .Photos["48x48"]
-                .Content
-                .Request()
-                .GetAsync();
-
-            // Generate an Adaptive Card
-            var userCard = CardHelper.GetUserCard(user, userPhoto);
-
-            // Create an attachment message to send the card
-            var userMessage = MessageFactory.Attachment(
-                new Microsoft.Bot.Schema.Attachment
-                {
-                    ContentType = AdaptiveCard.ContentType,
-                    Content = userCard
-                });
-
-            await stepContext.Context.SendActivityAsync(userMessage, cancellationToken);
-        }
 
         private async Task<DialogTurnResult> ReturnToPromptStepAsync(
             WaterfallStepContext stepContext,

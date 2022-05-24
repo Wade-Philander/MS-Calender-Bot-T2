@@ -62,7 +62,7 @@ namespace EchoBotWN.Bots
         {
             Logger.LogInformation("EchoBot.OnMembersAddedAsync");
             var welcomeText =
-                "Welcome to Microsoft Graph EchoBot. Type anything to get started.";
+                "Welcome to Angle Orange's Event Bot. Type anything to get started.";
 
             foreach (var member in membersAdded)
             {
