@@ -8666,19 +8666,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nparm\\.nuget\\packages\\": {}
+    "C:\\Users\\Wade\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nparm\\Documents\\Computer Programming\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
+      "projectUniqueName": "C:\\Users\\Wade\\source\\bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
       "projectName": "EchoBotWN",
-      "projectPath": "C:\\Users\\nparm\\Documents\\Computer Programming\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
-      "packagesPath": "C:\\Users\\nparm\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nparm\\Documents\\Computer Programming\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\obj\\",
+      "projectPath": "C:\\Users\\Wade\\source\\bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
+      "packagesPath": "C:\\Users\\Wade\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Wade\\source\\bot\\MS-Calender-Bot-T2\\EchoBotWN\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\nparm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Wade\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
