@@ -75,24 +75,24 @@ namespace EchoBotWN.Bots
             }
         }
 
-        protected override async Task OnTokenResponseEventAsync(
-            ITurnContext<IEventActivity> turnContext,
-            CancellationToken cancellationToken)
-        {
-            Logger.LogInformation("EchoBot.OnTokenResponseEventAsync");
-            await Dialog.RunAsync(turnContext,
-                ConversationState.CreateProperty<DialogState>(nameof(DialogState)),
-                cancellationToken);
-        }
+        //protected override async Task OnTokenResponseEventAsync(
+        //    ITurnContext<IEventActivity> turnContext,
+        //    CancellationToken cancellationToken)
+        //{
+        //    Logger.LogInformation("EchoBot.OnTokenResponseEventAsync");
+        //    await Dialog.RunAsync(turnContext,
+        //        ConversationState.CreateProperty<DialogState>(nameof(DialogState)),
+        //        cancellationToken);
+        //}
 
-        protected override async Task OnTeamsSigninVerifyStateAsync(
-            ITurnContext<IInvokeActivity> turnContext,
-            CancellationToken cancellationToken)
-        {
-            Logger.LogInformation("EchoBot.OnTeamsSigninVerifyStateAsync");
-            await Dialog.RunAsync(turnContext,
-                ConversationState.CreateProperty<DialogState>(nameof(DialogState)),
-                cancellationToken);
-        }
+        //protected override async Task OnTeamsSigninVerifyStateAsync(
+        //    ITurnContext<IInvokeActivity> turnContext,
+        //    CancellationToken cancellationToken)
+        //{
+        //    Logger.LogInformation("EchoBot.OnTeamsSigninVerifyStateAsync");
+        //    await Dialog.RunAsync(turnContext,
+        //        ConversationState.CreateProperty<DialogState>(nameof(DialogState)),
+        //        cancellationToken);
+        //}
     }
 }
