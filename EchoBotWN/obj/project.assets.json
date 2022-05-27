@@ -8666,19 +8666,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Wade\\.nuget\\packages\\": {}
+    "C:\\Users\\Adam\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Wade\\source\\bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
+      "projectUniqueName": "C:\\Users\\Adam\\Source\\Repos\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
       "projectName": "EchoBotWN",
-      "projectPath": "C:\\Users\\Wade\\source\\bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
-      "packagesPath": "C:\\Users\\Wade\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Wade\\source\\bot\\MS-Calender-Bot-T2\\EchoBotWN\\obj\\",
+      "projectPath": "C:\\Users\\Adam\\Source\\Repos\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
+      "packagesPath": "C:\\Users\\Adam\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Adam\\Source\\Repos\\MS-Calender-Bot-T2\\EchoBotWN\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Wade\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Adam\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8763,7 +8763,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.203\\RuntimeIdentifierGraph.json"
       }
     }
   },
