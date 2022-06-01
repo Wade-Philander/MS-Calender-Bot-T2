@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nparm\\Documents\\Computer Programming\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj": {}
+    "C:\\Users\\nparm\\Documents\\Computer Programming\\angle orange\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nparm\\Documents\\Computer Programming\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj": {
+    "C:\\Users\\nparm\\Documents\\Computer Programming\\angle orange\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nparm\\Documents\\Computer Programming\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
+        "projectUniqueName": "C:\\Users\\nparm\\Documents\\Computer Programming\\angle orange\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
         "projectName": "EchoBotWN",
-        "projectPath": "C:\\Users\\nparm\\Documents\\Computer Programming\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
+        "projectPath": "C:\\Users\\nparm\\Documents\\Computer Programming\\angle orange\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
         "packagesPath": "C:\\Users\\nparm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nparm\\Documents\\Computer Programming\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\obj\\",
+        "outputPath": "C:\\Users\\nparm\\Documents\\Computer Programming\\angle orange\\Bot\\MS-Calender-Bot-T2\\EchoBotWN\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\nparm\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -56,6 +56,14 @@
               "target": "Package",
               "version": "[3.1.1, )"
             },
+            "Microsoft.Azure.WebJobs.Core": {
+              "target": "Package",
+              "version": "[3.0.33, )"
+            },
+            "Microsoft.Azure.WebJobs.Extensions": {
+              "target": "Package",
+              "version": "[4.0.1, )"
+            },
             "Microsoft.Bot.Builder.Dialogs": {
               "target": "Package",
               "version": "[4.16.1, )"
@@ -75,6 +83,10 @@
             "Microsoft.WindowsAzure.ConfigurationManager": {
               "target": "Package",
               "version": "[3.2.3, )"
+            },
+            "System.Interactive": {
+              "target": "Package",
+              "version": "[6.0.1, )"
             },
             "WindowsAzure.StorageExtensions": {
               "target": "Package",

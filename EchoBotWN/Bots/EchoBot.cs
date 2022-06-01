@@ -8,6 +8,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Teams;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,20 +21,37 @@ namespace EchoBotWN.Bots
         protected readonly Dialog Dialog;
         protected readonly ILogger Logger;
         protected readonly BotState UserState;
+        private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
 
         public EchoBot(
             ConversationState conversationState,
             UserState userState,
             T dialog,
-            ILogger<EchoBot<T>> logger)
+            ILogger<EchoBot<T>> logger,
+            ConcurrentDictionary<string, 
+                ConversationReference> conversationReferences)
         {
             ConversationState = conversationState;
             UserState = userState;
             Dialog = dialog;
             Logger = logger;
-        }
+                _conversationReferences = conversationReferences;
+            }
 
-        public override async Task OnTurnAsync(
+    private void AddConversationReference(Activity activity)
+    {
+        var conversationReference = activity.GetConversationReference();
+        _conversationReferences.AddOrUpdate(conversationReference.User.Id, conversationReference, (key, newValue) => conversationReference);
+    }
+
+    protected override Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+    {
+        AddConversationReference(turnContext.Activity as Activity);
+
+        return base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
+    }
+
+    public override async Task OnTurnAsync(
             ITurnContext turnContext,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -49,6 +67,8 @@ namespace EchoBotWN.Bots
             ITurnContext<IMessageActivity> turnContext,
             CancellationToken cancellationToken)
         {
+            AddConversationReference(turnContext.Activity as Activity);
+
             Logger.LogInformation("EchoBot.OnMessageActivityAsync");
             await Dialog.RunAsync(turnContext,
                 ConversationState.CreateProperty<DialogState>(nameof(DialogState)),

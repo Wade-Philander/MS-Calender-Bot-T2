@@ -28,18 +28,18 @@ namespace EchoBotWN.Dialogs
             AddDialog(new TextPrompt("messagePrompt"));
 
             // Validator ensures that the input is a valid date and time
-                 AddDialog(new DateTimePrompt("startPrompt", StartPromptValidatorAsync));
+            AddDialog(new DateTimePrompt("startPrompt", StartPromptValidatorAsync));
             // Validator ensures that the input is a valid date and time
             // and that it is later than the start
             AddDialog(new ConfirmPrompt(nameof(ConfirmPrompt)));
 
             AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
             {
-    PromptForSubjectAsync,
-    PromptForMessageAsync,
-    PromptForStartAsync,
-    ConfirmNewEventAsync,
-    AddEventAsync
+                PromptForSubjectAsync,
+                PromptForMessageAsync,
+                PromptForStartAsync,
+                ConfirmNewEventAsync,
+                AddEventAsync
             }));
 
             // The initial child Dialog to run.
