@@ -1,12 +1,17 @@
 ﻿
     using System;
     using System.Collections.Concurrent;
-    using System.Net;
-    using System.Threading;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Bot.Builder;
-    using Microsoft.Bot.Builder.Integration.AspNet.Core;
+using AdaptiveCards;
+using EchoBotWN.Excel;
+using EchoBotWN.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Bot.Builder;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Integration.AspNet.Core;
     using Microsoft.Bot.Schema;
     using Microsoft.Extensions.Configuration;
 
@@ -45,7 +50,28 @@ namespace EchoBotWN.Controllers
 
             private async Task BotCallback(ITurnContext turnContext, CancellationToken cancellationToken)
             {
-                await turnContext.SendActivityAsync("proactive hello");
+
+            List<eventModel> events = await excel.getEvents();
+
+            var calendarViewMessage = MessageFactory.Text("Here are your upcoming events");
+            calendarViewMessage.AttachmentLayout = AttachmentLayoutTypes.List;
+            var dateTimeFormat = "G";
+
+
+            foreach (var calendarEvent in events)
+            {
+
+                var eventCard = CardHelper.GetEventCard(calendarEvent, dateTimeFormat);
+
+                // Add the card to the message's attachments
+                calendarViewMessage.Attachments.Add(new Microsoft.Bot.Schema.Attachment
+                {
+                    ContentType = AdaptiveCard.ContentType,
+                    Content = eventCard
+                });
+
+            }
+            await turnContext.SendActivityAsync(calendarViewMessage, cancellationToken);
             }
         }
     }

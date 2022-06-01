@@ -123,7 +123,6 @@ namespace EchoBotWN.Dialogs
     WaterfallStepContext stepContext,
     CancellationToken cancellationToken)
         {
-            ah();
             List<eventModel> events = await excel.getEvents();
           
             var calendarViewMessage = MessageFactory.Text("Here are your upcoming events");
@@ -176,8 +175,8 @@ namespace EchoBotWN.Dialogs
             string serviceUrl = "https://smba.trafficmanager.net/za/";
 
             //From the Bot Channel Registration
-            string botClientID = "7466e6a3-6587-481b-83e9-c6e175fdff06";
-            string botClientSecret = "kcu8Q~TagXpZJirIahiyHk7RKCAXDypNfXGbycx.";
+            string botClientID = "75cda236-8d0f-4b47-ad01-d3395eaf22a1";
+            string botClientSecret = "EZ88Q~qHWLLJEZ7oFOyt9aM7okfc5nG1vGeF0cL3";
 
             var account = new MicrosoftAppCredentials(botClientID, botClientSecret);
             var jwtToken = await account.GetTokenAsync();
