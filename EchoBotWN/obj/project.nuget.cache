@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bEddgpv2J889WrlKaNf3tZiK0g3MKq/wp0SFbQL0JwbO9UxuwBmCFnhWGGhZP/SofqvvoErldVgORU9FNzAVzA==",
+  "dgSpecHash": "V/V+K4ICFBVKGkdwM1KozPAgQ+fVWcEM9s6LGzyCwDAgcffj1putc/uAKNNscvm9YT4q08XX82o1/LypilnhGQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Adam\\Source\\Repos\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
+  "projectFilePath": "C:\\Users\\Adam\\source\\repos\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Adam\\.nuget\\packages\\adaptivecards\\2.7.3\\adaptivecards.2.7.3.nupkg.sha512",
     "C:\\Users\\Adam\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",

@@ -8671,11 +8671,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Adam\\Source\\Repos\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
+      "projectUniqueName": "C:\\Users\\Adam\\source\\repos\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
       "projectName": "EchoBotWN",
-      "projectPath": "C:\\Users\\Adam\\Source\\Repos\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
+      "projectPath": "C:\\Users\\Adam\\source\\repos\\MS-Calender-Bot-T2\\EchoBotWN\\EchoBotWN.csproj",
       "packagesPath": "C:\\Users\\Adam\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Adam\\Source\\Repos\\MS-Calender-Bot-T2\\EchoBotWN\\obj\\",
+      "outputPath": "C:\\Users\\Adam\\source\\repos\\MS-Calender-Bot-T2\\EchoBotWN\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Adam\\AppData\\Roaming\\NuGet\\NuGet.Config",
